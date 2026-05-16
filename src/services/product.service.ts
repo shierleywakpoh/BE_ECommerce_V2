@@ -12,18 +12,31 @@ export class ProductService {
   async create(
     name: string,
     description: string,
-    stock: number,
+    category: string,
     price: number,
-    imageUrl: string
+    offerPrice: number,
+    newPathImages: string[]
   ): Promise<void> {
     try {
+      console.log(
+        name,
+        description,
+        category,
+        price,
+        offerPrice,
+        newPathImages
+      );
       await this.productRepository.create(
         name,
         description,
-        stock,
+        category,
         price,
-        imageUrl
+        offerPrice,
+        newPathImages
       );
+      /**
+       *
+       */
     } catch (error: any) {
       return this.error.GenerateError(error);
     }
@@ -42,15 +55,9 @@ export class ProductService {
       return this.error.GenerateError(error);
     }
   }
-  async updateById(
-    id: string,
-
-    stock: number,
-    price: number
-  ): Promise<void> {
+  async updateById(id: string, instock: boolean): Promise<void> {
     try {
-      console.log("service", id, stock, price);
-      await this.productRepository.updateById(id, stock, price);
+      await this.productRepository.updateById(id, instock);
     } catch (error: any) {
       return this.error.GenerateError(error);
     }

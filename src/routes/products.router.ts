@@ -11,7 +11,7 @@ router.post(
   "/",
   auth.authAdmin.bind(auth),
   auth.roleAdmin.bind(auth),
-  upload.single("image"),
+  upload.array("image", 6),
   product.create.bind(product)
 );
 router.get("/", product.getAll.bind(product));

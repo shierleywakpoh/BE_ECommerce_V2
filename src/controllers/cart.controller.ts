@@ -12,16 +12,16 @@ export class CartController {
   }
   async create(req: AuthRequest, res: Response) {
     const id = req.user.id;
-    const { idProduct, quantity } = req.body;
+    const { productId, quantity } = req.body;
 
-    if (!idProduct || !quantity) {
+    if (!productId || !quantity) {
       return res
         .status(400)
         .json({ message: "idProduct, and quantity are required" });
     }
 
     try {
-      await this.cartService.create(id, idProduct, quantity);
+      await this.cartService.create(id, productId, quantity);
       return res.status(201).json({ message: "Added item is successfully" });
     } catch (error: any) {
       if (error.message == "Out of stock") {
@@ -45,24 +45,17 @@ export class CartController {
   }
   async update(req: Request, res: Response) {
     const id = req.params.id as string;
-    const { quantity, productId, quantityId, stock } = req.body;
+    const { quantity, productId } = req.body;
+    console.log(id, quantity, productId);
 
-    if (!quantity || !productId || !quantityId || !stock) {
-      return res
-        .status(400)
-        .json({
-          message: "Quantity, productId, quantityId, stock must be added",
-        });
+    if (!quantity || !productId) {
+      return res.status(400).json({
+        message: "Quantity, productId, quantityId, stock must be added",
+      });
     }
 
     try {
-      await this.cartService.update(
-        Number(id),
-        quantity,
-        productId,
-        quantityId,
-        stock
-      );
+      await this.cartService.update(Number(id), quantity, productId);
       return res.status(200).json({ message: "Changed cart is successfully" });
     } catch (error: any) {
       if (error.message == "Out of stock") {
@@ -72,13 +65,17 @@ export class CartController {
     }
   }
   async delete(req: Request, res: Response) {
+    console.log("ini delete");
     const id = req.params.id as string;
+    /**
+     * 
     const { quantity, stock, productId } = req.body;
     if (!quantity || !productId || !stock) {
       return res.status(400).json({ message: "Quantity, productId, stock" });
     }
+     */
     try {
-      await this.cartService.delete(Number(id), quantity, stock, productId);
+      await this.cartService.delete(Number(id));
       return res.status(200).json({ message: "Deleted cart is sucessfully" });
     } catch (error: any) {
       return res.status(500).json({ message: error.message });

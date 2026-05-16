@@ -16,14 +16,17 @@ export class CartService {
   async create(id: string, productId: number, quantity: number): Promise<void> {
     try {
       const findId = await this.cartRepository.findEmail(id);
+
+      /**
+       * 
       const product = await this.productRepository.getById(productId);
       const decStock = product.stock - quantity;
       if (decStock < -1) {
         throw new Error("Out of stock");
       }
-      await this.cartRepository.createCartItems(findId, productId, quantity);
-
       await this.productRepository.updateStock(decStock, productId);
+       */
+      await this.cartRepository.createCartItems(findId, productId, quantity);
     } catch (error: any) {
       return this.error.GenerateError(error);
     }
@@ -45,16 +48,14 @@ export class CartService {
       return this.error.GenerateError(error);
     }
   }
-  async update(
-    id: number,
-    quantity: number,
-    productId: number,
-    quantityId: number,
-    stock: number
-  ): Promise<void> {
+  async update(id: number, quantity: number, productId: number): Promise<void> {
+    console.log(id, quantity, productId);
     try {
-      const dquantity = quantity - quantityId;
-     
+      await this.cartRepository.updateCart(id, quantity, productId);
+
+      /**
+       * const dquantity = quantity - quantityId;
+
       if (dquantity >= 0) {
         stock = stock - dquantity;
         if (stock < 0) {
@@ -73,20 +74,18 @@ export class CartService {
           await this.cartRepository.updateCart(id, finalProduct);
           await this.productRepository.updateStock(stock1, productId);
         }
-      }
+       */
     } catch (error: any) {
       return this.error.GenerateError(error);
     }
   }
-  async delete(
-    id: number,
-    quantity: number,
-    stock: number,
-    productId: number
-  ): Promise<void> {
+  async delete(id: number): Promise<void> {
     try {
+      /**
+       * 
       const totalStock = quantity + stock;
       await this.productRepository.updateStock(totalStock, productId);
+       */
       await this.cartRepository.deleteCart(id);
     } catch (error: any) {
       return this.error.GenerateError(error);

@@ -65,10 +65,10 @@ export class CartRepository {
       return this.error.GenerateError(error);
     }
   }
-  async updateCart(id: number, quantity: number): Promise<void> {
-    const sql = "UPDATE cartItems SET  quantity = $1 WHERE id = $2";
+  async updateCart(id: number, quantity: number,productId: number): Promise<void> {
+    const sql = "UPDATE cartItems SET  quantity = $1 WHERE id = $2 AND product_id = $3" ;
     try {
-      const result = await pool.query(sql, [quantity, id]);
+      const result = await pool.query(sql, [quantity, id,productId]);
       if (result.rowCount === 0) {
         throw new Error("something error");
       }

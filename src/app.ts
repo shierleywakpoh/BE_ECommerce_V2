@@ -10,7 +10,12 @@ import transaction from "./routes/transaction.route";
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Alamat spesifik frontend kamu
+    credentials: true, // Izinkan pengiriman cookie/headers privat
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

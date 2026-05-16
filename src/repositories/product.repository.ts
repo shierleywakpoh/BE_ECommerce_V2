@@ -11,14 +11,22 @@ export class ProductRepository {
   async create(
     name: string,
     description: string,
-    stock: number,
+    category: string,
     price: number,
-    imageUrl: string
+    offerPrice: number,
+    newPathImages: string[]
   ): Promise<void> {
     try {
       const sql =
-        "INSERT INTO products(name, description, stock,price,imageUrl) VALUES($1,$2,$3,$4,$5)";
-      await pool.query(sql, [name, description, stock, price, imageUrl]);
+        "INSERT INTO products(name, description, category,price,offerprice,imageUrl) VALUES($1,$2,$3,$4,$5,$6)";
+      await pool.query(sql, [
+        name,
+        description,
+        category,
+        price,
+        offerPrice,
+        newPathImages,
+      ]);
     } catch (error: any) {
       throw new Error("Something error");
     }
@@ -49,14 +57,12 @@ export class ProductRepository {
   async updateById(
     id: string,
 
-    stock: number,
-    price: number
+    instock: boolean
   ): Promise<void> {
     try {
-      console.log("repo", id, stock, price);
       const sql =
-        "UPDATE products SET stock = $2, price = $3, updateAt = CURRENT_TIMESTAMP WHERE id = $1";
-      await pool.query(sql, [id, stock, price]);
+        "UPDATE products SET instock = $2, updateAt = CURRENT_TIMESTAMP WHERE id = $1";
+      await pool.query(sql, [id, instock]);
     } catch (error: any) {
       throw new Error("Something error");
     }
