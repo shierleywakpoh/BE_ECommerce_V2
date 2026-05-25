@@ -21,7 +21,8 @@ export class TransactionService {
     cusname: string,
     cuscontact: number,
     cusaddress: string,
-    id: string
+    id: string,
+    paymentOption: string
   ): Promise<string | null> {
     try {
       await this.transactionRepository.create(
@@ -30,13 +31,16 @@ export class TransactionService {
         cusname,
         cuscontact,
         cusaddress,
-        id
+        id,
+        paymentOption
       );
+      
+      
 
       const carts = cartItems.map((value: any) => {
         return {
           price_data: {
-            currency: "idr",
+            currency: "usd",
             product_data: {
               name: value.name,
             },
@@ -45,11 +49,11 @@ export class TransactionService {
           quantity: value.quantity,
         };
       });
-
+      
       const session = await stripe.checkout.sessions.create({
         line_items: carts,
         mode: "payment",
-        success_url: `http://localhost:4000/success.html?session_id={CHECKOUT_SESSION_ID}`,
+        success_url: `http://localhost:5173/my-orders`,
         cancel_url: "http://localhost:4000/cancel",
       });
 
@@ -58,6 +62,15 @@ export class TransactionService {
       return this.error.GenerateError(error);
     }
   }
+
+  async getAllTransactions(): Promise<transaction[]> {
+    try {
+      return await this.transactionRepository.getAllTransactions();
+    } catch (error: any) {
+      return this.error.GenerateError(error);
+    }
+  }
+
   async getDataById(id: string): Promise<transaction[]> {
     try {
       return await this.transactionRepository.getDataById(id);
@@ -65,9 +78,8 @@ export class TransactionService {
       return this.error.GenerateError(error);
     }
   }
-  async deleteCart(id: string) :Promise<void>{
+  async deleteCart(id: string): Promise<void> {
     try {
-      
       await this.transactionRepository.deleteCart(id);
     } catch (error: any) {
       return this.error.GenerateError(error);

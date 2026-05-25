@@ -34,8 +34,7 @@ export class ProductRepository {
   async getAll(): Promise<products[]> {
     try {
       const sql = "SELECT * FROM products";
-      //console.log("products", (await pool.query(sql)).rowCount);
-      //console.log("products", (await pool.query(sql)).rows);
+      
       if ((await pool.query(sql)).rowCount == 0) {
         throw new Error("Product not available");
       }
@@ -76,14 +75,13 @@ export class ProductRepository {
       if (result.rowCount === 0) {
         throw new Error("something error");
       }
-      //return (await pool.query(sql, [id])).rowCount;
+      
     } catch (error: any) {
       throw new Error("Something error");
     }
   }
   async updateStock(stock: number, id: number): Promise<void> {
-    console.log("totalStock1", stock);
-    console.log("iddd", id);
+    
     try {
       const sql =
         "UPDATE products SET stock = $2, updateAt = CURRENT_TIMESTAMP WHERE id = $1";
@@ -105,6 +103,6 @@ export class ProductRepository {
       return this.error.GenerateError(error);
     }
 
-    //console.log("result", result);
+    
   }
 }

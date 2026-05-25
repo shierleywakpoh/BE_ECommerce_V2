@@ -37,10 +37,7 @@ export class CustomerService {
       return this.error.GenerateError(error);
     }
   }
-  /**
-   * 
-   
-   */
+  
 
   async customerLogin(
     email: string,

@@ -34,9 +34,7 @@ export class ProductService {
         offerPrice,
         newPathImages
       );
-      /**
-       *
-       */
+      
     } catch (error: any) {
       return this.error.GenerateError(error);
     }

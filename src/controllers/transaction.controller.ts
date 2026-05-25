@@ -18,15 +18,31 @@ export class TransactionController {
   }
 
   async create(req: AuthRequest, res: Response) {
-    const { cartItems, cusname, cuscontact, cusaddress, price } = req.body;
-    if (!cartItems || !cusname || !cuscontact || !cusaddress || !price) {
+    const { cartItems, cusname, cuscontact, cusaddress, price, paymentOption } =
+      req.body;
+    if (
+      !cartItems ||
+      !cusname ||
+      !cuscontact ||
+      !cusaddress ||
+      !price ||
+      !paymentOption
+    ) {
       return res.status(400).json({
         message:
-          "CartItems, cusname, cuscontact, cusaddress, and price are required",
+          "CartItems, cusname, cuscontact, cusaddress, paymentOption, and price are required",
       });
     }
-    
+
     const id = req.user.id;
+    console.log(
+      cartItems,
+      cusname,
+      cuscontact,
+      cusaddress,
+      price,
+      paymentOption
+    );
 
     try {
       const transactions = await this.transactionService.create(
@@ -35,18 +51,34 @@ export class TransactionController {
         cusname,
         cuscontact,
         cusaddress,
-        id
+        id,
+        paymentOption
       );
+
       return res.status(201).json({
         url: transactions,
         message: "sucessfully",
       });
+
+     
     } catch (error: any) {
       return res.status(500).json({ message: error.message });
     }
   }
+
+  async getAllTransactions(req: AuthRequest, res: Response) {
+    try {
+      console.log("get all transactions");
+      const result = await this.transactionService.getAllTransactions();
+      res.status(201).json(result);
+    } catch (error: any) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+
   async getDataById(req: AuthRequest, res: Response) {
     const id = req.user.id;
+    console.log("haloo");
 
     try {
       const result = await this.transactionService.getDataById(id);
@@ -67,7 +99,7 @@ export class TransactionController {
         await this.transactionService.deleteCart(userId);
         return res.status(200).json({
           message: "Payment verified and cart cleared!",
-          orderId: session.metadata?.order_id, // Jika kamu simpan metadata
+          orderId: session.metadata?.order_id,
         });
       } else {
         return res.status(400).json({ message: "Payment not completed yet." });

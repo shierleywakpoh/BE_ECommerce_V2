@@ -13,11 +13,12 @@ export class TransactionRepository {
     cusname: string,
     cuscontact: number,
     cusaddress: string,
-    id: string
+    id: string,
+    paymentOption:string
   ): Promise<void> {
     try {
       const sql =
-        "INSERT INTO transactions(cartItems,price,cusname,cuscontact,cusaddress,user_id) VALUES ($1,$2,$3,$4,$5,$6)";
+        "INSERT INTO transactions(cartItems,price,cusname,cuscontact,cusaddress,user_id,paymentoption) VALUES ($1,$2,$3,$4,$5,$6,$7)";
 
       await pool.query(sql, [
         cartItems,
@@ -25,12 +26,27 @@ export class TransactionRepository {
         cusname,
         cuscontact,
         cusaddress,
-        id,
+        id,paymentOption
       ]);
     } catch (error: any) {
       return this.error.GenerateError(error);
     }
   }
+
+  async getAllTransactions(): Promise<transaction[]>{
+    const sql = "SELECT * FROM transactions"
+
+    try {
+      const result = await pool.query(sql);
+      if (result.rowCount == 0) {
+        throw new Error("Order not found");
+      }
+      return result.rows;
+    } catch (error:any) {
+      return this.error.GenerateError(error);
+    }
+  }
+
   async getDataById(id: string): Promise<transaction[]> {
     const sql =
       "SELECT status,cartitems,price FROM transactions WHERE user_id = $1";

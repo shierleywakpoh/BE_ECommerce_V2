@@ -23,7 +23,7 @@ const fileFilter = (
   if (file.mimetype.startsWith("image/")) {
     cb(null, true);
   } else {
-    //console.log(file.mimetype.startsWith("/image"))
+    
     cb(new Error("only images are allowed"));
   }
 };

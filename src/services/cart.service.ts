@@ -17,15 +17,6 @@ export class CartService {
     try {
       const findId = await this.cartRepository.findEmail(id);
 
-      /**
-       * 
-      const product = await this.productRepository.getById(productId);
-      const decStock = product.stock - quantity;
-      if (decStock < -1) {
-        throw new Error("Out of stock");
-      }
-      await this.productRepository.updateStock(decStock, productId);
-       */
       await this.cartRepository.createCartItems(findId, productId, quantity);
     } catch (error: any) {
       return this.error.GenerateError(error);
@@ -34,14 +25,6 @@ export class CartService {
   async getById(id: string): Promise<carts[]> {
     try {
       const resultGet = await this.cartRepository.getCart(id);
-
-      /**
-       * 
-      const totalPrice = resultGet.rows.reduce((total, index) => {
-        return total + index.price * index.quantity;
-      }, 0);
-      resultGet.rows.push(totalPrice);
-       */
 
       return resultGet;
     } catch (error: any) {
@@ -53,39 +36,14 @@ export class CartService {
     try {
       await this.cartRepository.updateCart(id, quantity, productId);
 
-      /**
-       * const dquantity = quantity - quantityId;
 
-      if (dquantity >= 0) {
-        stock = stock - dquantity;
-        if (stock < 0) {
-          throw new Error("Out of stock");
-        }
-        await this.productRepository.updateStock(stock, productId);
-        await this.cartRepository.updateCart(id, quantity);
-      } else if (dquantity < 0) {
-        const stock1 = stock - dquantity;
-        const finalProduct = quantityId + dquantity;
-        if (finalProduct == 0) {
-          const totalStock = stock + quantityId;
-          await this.productRepository.updateStock(totalStock, productId);
-          await this.cartRepository.deleteCart(id);
-        } else {
-          await this.cartRepository.updateCart(id, finalProduct);
-          await this.productRepository.updateStock(stock1, productId);
-        }
-       */
     } catch (error: any) {
       return this.error.GenerateError(error);
     }
   }
   async delete(id: number): Promise<void> {
     try {
-      /**
-       * 
-      const totalStock = quantity + stock;
-      await this.productRepository.updateStock(totalStock, productId);
-       */
+   
       await this.cartRepository.deleteCart(id);
     } catch (error: any) {
       return this.error.GenerateError(error);

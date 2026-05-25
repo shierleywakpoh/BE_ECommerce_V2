@@ -4,6 +4,7 @@ import routes from "./routes/customer.route";
 import Aroutes from "./routes/admin.route";
 import products from "./routes/products.router";
 import cart from "./routes/cart.route";
+import address from "./routes/address.route";
 
 import path from "path";
 import transaction from "./routes/transaction.route";
@@ -12,8 +13,8 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // Alamat spesifik frontend kamu
-    credentials: true, // Izinkan pengiriman cookie/headers privat
+    origin: "http://localhost:5173", 
+    credentials: true, 
   })
 );
 app.use(express.json());
@@ -21,12 +22,13 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use(express.static(path.join(__dirname, "../public")));
-//console.log(path.join(__dirname, "../uploads"));
+
 
 app.use("/customerRegister", routes);
 app.use("/adminRegister", Aroutes);
 app.use("/product", products);
 app.use("/cart", cart);
+app.use("/address", address);
 
 app.use("/transaction", transaction);
 

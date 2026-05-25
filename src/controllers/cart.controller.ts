@@ -46,7 +46,7 @@ export class CartController {
   async update(req: Request, res: Response) {
     const id = req.params.id as string;
     const { quantity, productId } = req.body;
-    console.log(id, quantity, productId);
+    
 
     if (!quantity || !productId) {
       return res.status(400).json({
@@ -65,15 +65,9 @@ export class CartController {
     }
   }
   async delete(req: Request, res: Response) {
-    console.log("ini delete");
+    
     const id = req.params.id as string;
-    /**
-     * 
-    const { quantity, stock, productId } = req.body;
-    if (!quantity || !productId || !stock) {
-      return res.status(400).json({ message: "Quantity, productId, stock" });
-    }
-     */
+
     try {
       await this.cartService.delete(Number(id));
       return res.status(200).json({ message: "Deleted cart is sucessfully" });

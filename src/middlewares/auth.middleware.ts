@@ -16,7 +16,7 @@ export class Middlewares {
   async authCustomer(req: AuthRequest, res: Response, next: NextFunction) {
     const authHeader = req.headers.authorization || "";
     const [scheme, token] = authHeader.split(" ");
-    //const tokenKey = process.env.JWT_SECRET || "tokenEcommerce";
+    
 
     if (scheme !== "Bearer" || !token)
       return res
@@ -36,7 +36,7 @@ export class Middlewares {
   async authAdmin(req: AuthRequest, res: Response, next: NextFunction) {
     const authHeader = req.headers.authorization || "";
     const [scheme, token] = authHeader.split(" ");
-    //const tokenKey = process.env.JWT_ADMIN || "tokenAdmin";
+    
 
     if (scheme !== "Bearer" || !token)
       return res
@@ -58,14 +58,14 @@ export class Middlewares {
     if (req.user.role !== "customer") {
       return res.status(403).json({ message: "Forbidden" });
     }
-    //return res.status(201).json({ message: "bisaa" });
+    
     next();
   }
   async roleAdmin(req: AuthRequest, res: Response, next: NextFunction) {
     if (req.user.role !== "admin") {
       return res.status(403).json({ message: "Forbidden" });
     }
-    //return res.status(201).json({ message: "bisaa" });
+    
     next();
   }
 }

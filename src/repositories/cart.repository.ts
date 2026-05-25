@@ -35,7 +35,7 @@ export class CartRepository {
     productId: number,
     quantity: number
   ): Promise<void> {
-    console.log("abc");
+    
     const sql = ` INSERT INTO cartItems (cart_id, product_id, quantity)
     VALUES ($1, $2, $3)
     ON CONFLICT (cart_id, product_id) 
@@ -52,10 +52,10 @@ export class CartRepository {
 
   async getCart(id: string): Promise<carts[]> {
     const sql =
-      "SELECT carts.user_id, cartItems.id,products.name,products.price,products.imageurl,products.id As product_id,products.stock,cartItems.quantity FROM cartItems JOIN carts ON cartItems.cart_id = carts.id JOIN products ON cartItems.product_id = products.id WHERE carts.user_id =$1";
+      "SELECT carts.user_id, cartItems.id,products.name,products.price,products.offerprice,products.imageurl,products.id As product_id,products.stock,cartItems.quantity FROM cartItems JOIN carts ON cartItems.cart_id = carts.id JOIN products ON cartItems.product_id = products.id WHERE carts.user_id =$1";
     try {
       const result = await pool.query(sql, [id]);
-      
+
       if (result.rowCount == 0) {
         throw new Error("User does not have cart");
       }
@@ -65,10 +65,15 @@ export class CartRepository {
       return this.error.GenerateError(error);
     }
   }
-  async updateCart(id: number, quantity: number,productId: number): Promise<void> {
-    const sql = "UPDATE cartItems SET  quantity = $1 WHERE id = $2 AND product_id = $3" ;
+  async updateCart(
+    id: number,
+    quantity: number,
+    productId: number
+  ): Promise<void> {
+    const sql =
+      "UPDATE cartItems SET  quantity = $1 WHERE id = $2 AND product_id = $3";
     try {
-      const result = await pool.query(sql, [quantity, id,productId]);
+      const result = await pool.query(sql, [quantity, id, productId]);
       if (result.rowCount === 0) {
         throw new Error("something error");
       }

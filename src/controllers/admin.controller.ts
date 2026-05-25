@@ -45,8 +45,7 @@ export class AdminController {
   async loginAdmin(req: Request, res: Response) {
     const key = process.env.JWT_ADMIN || "tokenAdmin";
     const { email, password } = req.body;
-    console.log("email", email);
-    console.log("password", password);
+    
     if (!email || !password) {
       return res
         .status(400)
@@ -63,7 +62,7 @@ export class AdminController {
         password as string,
         key
       );
-      console.log("result", result);
+      
       res.status(201).json({ message: "Login succesfully", token: result });
     } catch (error: any) {
       if (error.message == "Email doesn't exist") {

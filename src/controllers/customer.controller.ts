@@ -4,7 +4,7 @@ import { CustomerService } from "../services/customer.service";
 export class CustomerController {
   customerService: CustomerService;
   constructor() {
-    //this.insertCustomer = this.insertCustomer.bind(this);
+    
     this.customerService = new CustomerService();
   }
 

@@ -7,7 +7,7 @@ export class Product {
     this.productService = new ProductService();
   }
   async create(req: Request, res: Response) {
-    let newPathImages: string[] = []; // Definisikan sebagai array string
+    let newPathImages: string[] = [];
 
     try {
       const value = JSON.parse(req.body.productData);
@@ -20,7 +20,7 @@ export class Product {
           newPathImages.push(pathImages[index].path.replace(/\\/g, "/"));
         });
 
-        //value.imageUrl = req.file.path.replace(/\\/g, "/");
+        
       } else {
         throw new Error("file is required");
       }

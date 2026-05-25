@@ -15,18 +15,7 @@ export class Bycrpt {
     try {
       const salt = await bcrypt.genSalt(10);
       const passHash = await bcrypt.hash(password, salt);
-      /**
-       const insertCustomer = await this.customerRepository.insertCustomer(
-         email,
-         passHash,
-         name,
-         role
-       );
-       * 
-       if (insertCustomer.rowCount == 0) {
-         throw new Error("customer can't added to database");
-       }
-       */
+     
       return passHash;
     } catch (error: any) {
       throw error.GenerateError(error);

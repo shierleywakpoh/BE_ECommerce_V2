@@ -19,6 +19,12 @@ router.get(
   transaction.getDataById.bind(transaction)
 );
 router.get(
+  "/allTransactions",
+  auth.authAdmin.bind(auth),
+  auth.roleAdmin.bind(auth),
+  transaction.getAllTransactions.bind(transaction)
+);
+router.get(
   "/verify-payment",
   auth.authCustomer.bind(auth),
   auth.roleCustomer.bind(auth),
