@@ -78,11 +78,11 @@ Cart Management
 
 Transaction
 - POST /transaction
-  Create an order and get Stripe checkout session.
-- GET /transaction/verify-payment
-  Verify payment status and clear the cart.
+  Create an order, clear the cart and get Stripe checkout session.
 - GET /transaction
-  View order history/status.
+  View order history/status in user
+- Get /transaction/allTransactions
+  View All order history/status users in Admin
 
 ## How to Run
 1. Clone the repository.
